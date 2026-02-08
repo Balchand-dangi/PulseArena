@@ -1,0 +1,190 @@
+/* ===== GLOBAL RESET ===== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ===== HERO SECTION ===== */
+
+.hero-section {
+  position: relative;
+  height: 80vh;
+  overflow: hidden;
+}
+
+.hero-banner {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+  background: rgba(0,0,0,0.55);
+  padding: 30px;
+  border-radius: 10px;
+}
+
+/* ===== ABOUT ===== */
+
+.about-section {
+  padding: 60px 20px;
+  background: #f8f9fa;
+  text-align: center;
+}
+
+/* ===== GAMES ===== */
+
+.games-section {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.games-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.game-card {
+  background: white;
+  padding: 20px;
+  width: 220px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* ===== CONTACT ===== */
+
+.contact-section {
+  padding: 60px 20px;
+  background: #111827;
+  color: white;
+  text-align: center;
+}
+
+.cta-button {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 12px 25px;
+  background: #2563eb;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+}
+
+/* ===== FORM BUTTON FIX ===== */
+
+input[type="submit"],
+input[type="reset"] {
+  height: 40px;
+  width: 305px;
+  border: none;
+  background-color: black;
+  color: white;
+  font-size: 16px;
+  margin: 6px 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+input[type="submit"]:hover,
+input[type="reset"]:hover {
+  opacity: 0.9;
+}
+
+
+
+/* ===== HERO SECTION FIX ===== */
+
+#home {
+  width: 100%;
+  height: 80vh;
+  overflow: hidden;
+  position: relative;
+}
+
+#bannerId {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.55);
+  color: white;
+  padding: 25px 40px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+
+
+#homeBottom {
+  padding: 60px 10%;
+  line-height: 26px;
+  text-align: center;
+  background: #f8fafc;
+}
+
+
+
+.container-inner {
+  max-width: 900px;
+  margin: auto;
+  text-align: center;
+}
+
+
+
+/* .App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+} */

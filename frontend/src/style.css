@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600&display=swap');
+
+* {
+  font-family: "Josefin Sans", sans-serif;
+  margin: 0;
+}
+
+/* ===== CONTAINER ===== */
+
+#container {
+  width: 95%;
+  margin: auto;
+}
+
+/* ===== HEADER ===== */
+
+#header {
+  height: 60px;
+  background-color: whitesmoke;
+}
+
+#logo {
+  height: 50px;
+  margin: 5px;
+}
+
+#heading {
+  position: absolute;
+  margin-top: 15px;
+  margin-left: 10px;
+}
+
+/* ===== NAVBAR ===== */
+
+.navbar {
+  background: #0f172a;
+  padding: 14px 40px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+}
+
+.nav-links {
+  display: flex;
+  gap: 25px;
+}
+
+.nav-item {
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.2s;
+}
+
+.nav-item:hover {
+  color: #38bdf8;
+}
+
+.logout {
+  color: #f87171;
+}
+
+
+/* ===== HOME ===== */
+
+#home {
+  height: 400px;
+}
+
+#bannerId {
+  height: 400px;
+  width: 100%;
+  object-fit: cover;
+}
+
+#homeBottom {
+  padding: 20px;
+  line-height: 26px;
+  text-align: justify;
+}
+
+/* ===== AUTH PAGES ===== */
+
+.auth-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  padding: 60px 8%;
+}
+
+.auth-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.auth-image img {
+  width: 100%;
+  max-width: 480px;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+
+.auth-form {
+  flex: 1;
+  max-width: 420px;
+}
+
+/* ===== FORM FIELDS ===== */
+
+select,
+input,
+textarea {
+  height: 36px;
+  width: 300px;
+  margin: 6px 0;
+  font-size: 16px;
+  border: none;
+  border-bottom: 2px solid black;
+  outline: none;
+}
+
+textarea {
+  height: 50px;
+}
+
+/* ===== MOBILE ===== */
+
+@media (max-width: 900px) {
+  .auth-container {
+    flex-direction: column;
+    padding: 40px 5%;
+  }
+
+  .auth-image img {
+    max-width: 320px;
+  }
+
+  .auth-form {
+    width: 100%;
+  }
+}
+
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+
