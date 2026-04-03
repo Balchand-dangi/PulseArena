@@ -3,6 +3,7 @@ import participantLoginImg from "../images/participantLogin.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { participantLoginThunk } from "../store/participantSlice.js";
+import { setNavShow } from "../store/commonSlice.js";
 
 function LoginParticipant() {
   const participantObj = useSelector((state) => state.participant);
@@ -25,26 +26,23 @@ function LoginParticipant() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // ✅ Basic validation
     if (!participantData.email || !participantData.password) {
       alert("Please enter email and password");
       return;
     }
 
-    // ✅ Wait for login to complete
     const resultAction = await dispatch(participantLoginThunk(participantData));
 
-    // ✅ Login success
     if (participantLoginThunk.fulfilled.match(resultAction)) {
+      dispatch(setNavShow("participant")); // ✅ important fix
+
       navigate("/participantHome");
+
       setParticipantData({
         email: "",
         password: ""
       });
-    }
-
-    // ❌ Login failed
-    else if (participantLoginThunk.rejected.match(resultAction)) {
+    } else if (participantLoginThunk.rejected.match(resultAction)) {
       console.log("Login failed:", resultAction.payload);
     }
   };

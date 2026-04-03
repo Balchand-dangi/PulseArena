@@ -1,19 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    // Controls which navigation menu is active
-    // Example: home, tournaments, participant, organizer, admin
-    navShow: "home"
+  navShow: "home" // home | participant | organizer | admin
 };
 
 const commonSlice = createSlice({
-    name: "commonSlice",
-    initialState,
-    reducers: {
-        setNavShow: (state, action) => {
-            state.navShow = action.payload;
-        }
+  name: "common",
+  initialState,
+  reducers: {
+    setNavShow: (state, action) => {
+      state.navShow = action.payload;
     }
+  }
 });
 
 export const { setNavShow } = commonSlice.actions;

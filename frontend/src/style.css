@@ -1,60 +1,59 @@
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600;700&display=swap');
 
 * {
   font-family: "Josefin Sans", sans-serif;
   margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 /* ===== CONTAINER ===== */
 
 #container {
-  width: 95%;
+  width: 100%;
   margin: auto;
 }
 
 /* ===== HEADER ===== */
 
 #header {
-  height: 60px;
-  background-color: whitesmoke;
-}
-
-#logo {
-  height: 50px;
-  margin: 5px;
-}
-
-#heading {
-  position: absolute;
-  margin-top: 15px;
-  margin-left: 10px;
+  display: none;
 }
 
 /* ===== NAVBAR ===== */
 
 .navbar {
-  background: #0f172a;
-  padding: 14px 40px;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(12px);
+  padding: 16px 6%;
   position: sticky;
   top: 0;
   z-index: 1000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .nav-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 20px;
 }
 
 .nav-logo {
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 28px;
+  font-weight: 700;
   color: white;
+  letter-spacing: 0.4px;
 }
 
 .nav-links {
   display: flex;
-  gap: 25px;
+  gap: 28px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .nav-item {
@@ -63,6 +62,23 @@
   cursor: pointer;
   font-size: 16px;
   transition: 0.2s;
+  font-weight: 600;
+  position: relative;
+}
+
+.nav-item::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 2px;
+  background: #38bdf8;
+  transition: 0.25s ease;
+}
+
+.nav-item:hover::after {
+  width: 100%;
 }
 
 .nav-item:hover {
@@ -73,25 +89,6 @@
   color: #f87171;
 }
 
-
-/* ===== HOME ===== */
-
-#home {
-  height: 400px;
-}
-
-#bannerId {
-  height: 400px;
-  width: 100%;
-  object-fit: cover;
-}
-
-#homeBottom {
-  padding: 20px;
-  line-height: 26px;
-  text-align: justify;
-}
-
 /* ===== AUTH PAGES ===== */
 
 .auth-container {
@@ -99,7 +96,9 @@
   align-items: center;
   justify-content: center;
   gap: 60px;
-  padding: 60px 8%;
+  padding: 70px 8%;
+  min-height: 90vh;
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
 }
 
 .auth-image {
@@ -110,14 +109,25 @@
 
 .auth-image img {
   width: 100%;
-  max-width: 480px;
-  border-radius: 16px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  max-width: 520px;
+  border-radius: 22px;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.18);
 }
 
 .auth-form {
   flex: 1;
-  max-width: 420px;
+  max-width: 440px;
+  background: rgba(255, 255, 255, 0.88);
+  padding: 34px 28px;
+  border-radius: 24px;
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+.auth-form h2 {
+  font-size: 32px;
+  color: #111827;
+  margin-bottom: 8px;
 }
 
 /* ===== FORM FIELDS ===== */
@@ -125,17 +135,40 @@
 select,
 input,
 textarea {
-  height: 36px;
-  width: 300px;
-  margin: 6px 0;
+  height: 44px;
+  width: 100%;
+  margin: 8px 0;
   font-size: 16px;
-  border: none;
-  border-bottom: 2px solid black;
+  border: 1px solid #d1d5db;
   outline: none;
+  border-radius: 10px;
+  padding: 0 14px;
+  background: white;
 }
 
 textarea {
-  height: 50px;
+  min-height: 90px;
+  padding-top: 12px;
+  resize: vertical;
+}
+
+select:focus,
+input:focus,
+textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+/* ===== REGISTRATION LINK ===== */
+
+#registrationLink {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+#registrationLink:hover {
+  text-decoration: underline;
 }
 
 /* ===== MOBILE ===== */
@@ -147,18 +180,28 @@ textarea {
   }
 
   .auth-image img {
-    max-width: 320px;
+    max-width: 340px;
   }
 
   .auth-form {
     width: 100%;
   }
+
+  .navbar {
+    padding: 14px 20px;
+  }
+
+  .nav-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links {
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .nav-logo {
+    font-size: 24px;
+  }
 }
-
-
-
-html {
-  scroll-behavior: smooth;
-}
-
-

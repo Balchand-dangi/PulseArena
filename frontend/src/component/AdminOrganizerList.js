@@ -8,6 +8,7 @@ import {
   adminViewOrganizerListThunk
 } from "../store/adminSlice.js";
 import { tournamentImagePath } from "../utils.js";
+import "../pages/Admin.css";
 
 function AdminOrganizerList() {
   const adminObj = useSelector((state) => state.admin);
@@ -17,16 +18,13 @@ function AdminOrganizerList() {
   const [loading, setLoading] = useState(true);
   const [brokenImages, setBrokenImages] = useState({});
 
-  /* ===== AUTH GUARD ===== */
   useEffect(() => {
     const token = jscookie.get("adminTokenData");
-
     if (!token) {
       navigate("/adminLogin");
     }
   }, [navigate]);
 
-  /* ===== LOAD DATA ===== */
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -43,20 +41,16 @@ function AdminOrganizerList() {
     dispatch(adminViewOrganizerListThunk());
   };
 
-  /* ===== IMAGE RESOLVER ===== */
   const getOrganizerLogo = (logo) => {
     if (!logo || typeof logo !== "string") return null;
 
     const trimmedLogo = logo.trim();
-
     if (!trimmedLogo) return null;
 
-    // Full Cloudinary / HTTP image
     if (trimmedLogo.startsWith("http://") || trimmedLogo.startsWith("https://")) {
       return trimmedLogo;
     }
 
-    // Local image file only if it looks like a real file
     const looksLikeLocalFile =
       trimmedLogo.includes(".png") ||
       trimmedLogo.includes(".jpg") ||
@@ -67,153 +61,133 @@ function AdminOrganizerList() {
       return `${tournamentImagePath}/${trimmedLogo}`;
     }
 
-    // If it is just Cloudinary public_id like:
-    // PulseArena_DEV/tournaments/abcxyz
-    // then don't try to load invalid URL
     return null;
   };
 
-  const adminEmail = adminObj.loggedInEmail || jscookie.get("adminEmail") || "Admin";
+  const adminEmail =
+    adminObj.loggedInEmail || jscookie.get("adminEmail") || "Admin";
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Welcome {adminEmail}</h2>
+    <div className="admin-page">
+      <div className="admin-page-header">
+        <div>
+          <p className="admin-badge">PulseArena Admin Panel</p>
+          <h1 className="admin-main-title">Organizer Management</h1>
+          <p className="admin-subtitle">
+            Welcome {adminEmail}. Review, verify, and manage organizer accounts.
+          </p>
+        </div>
+      </div>
 
       {adminObj.message && (
-        <h3
-          style={{
-            color: adminObj.status === 200 ? "green" : "crimson"
-          }}
+        <div
+          className={`admin-alert ${
+            adminObj.status === 200 ? "admin-alert-success" : "admin-alert-error"
+          }`}
         >
           {adminObj.message}
-        </h3>
+        </div>
       )}
 
       {loading ? (
-        <div>Loading organizers...</div>
+        <div className="admin-loader-box">Loading organizers...</div>
       ) : adminObj.organizerArray?.length > 0 ? (
-        <div>
-          <h2>Organizer List</h2>
+        <div className="admin-card">
+          <div className="admin-card-header">
+            <h3>Organizer List</h3>
+            <span className="admin-chip">
+              {adminObj.organizerArray.length} Organizers
+            </span>
+          </div>
 
-          <table
-            style={{ fontSize: "14px", width: "100%" }}
-            border={1}
-            cellPadding={5}
-            cellSpacing={0}
-          >
-            <thead style={{ backgroundColor: "#111", color: "white" }}>
-              <tr>
-                <th>S.No</th>
-                <th>Email</th>
-                <th>Organizer ID</th>
-                <th>Name</th>
-                <th>Contact</th>
-                <th>Game Category</th>
-                <th>Description</th>
-                <th>Address</th>
-                <th>Logo</th>
-                <th>Email Verified</th>
-                <th>Admin Verify</th>
-              </tr>
-            </thead>
+          <div className="admin-table-wrapper">
+            <table className="admin-table admin-organizer-table">
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Email</th>
+                  <th>Organizer ID</th>
+                  <th>Name</th>
+                  <th>Contact</th>
+                  <th>Category</th>
+                  <th>Description</th>
+                  <th>Address</th>
+                  <th>Logo</th>
+                  <th>Email Verified</th>
+                  <th>Admin Verify</th>
+                </tr>
+              </thead>
 
-            <tbody>
-              {adminObj.organizerArray.map((obj, index) => {
-                const logoUrl = getOrganizerLogo(obj.organizerLogo);
-                const imageKey = obj.organizerId || obj.email || index;
-                const isBroken = brokenImages[imageKey];
+              <tbody>
+                {adminObj.organizerArray.map((obj, index) => {
+                  const logoUrl = getOrganizerLogo(obj.organizerLogo);
+                  const imageKey = obj.organizerId || obj.email || index;
+                  const isBroken = brokenImages[imageKey];
 
-                return (
-                  <tr key={imageKey}>
-                    <td>{index + 1}</td>
-                    <td>{obj.email}</td>
-                    <td>{obj.organizerId}</td>
-                    <td>{obj.organizerName}</td>
-                    <td>{obj.contact}</td>
-                    <td>{obj.gameCategory}</td>
-                    <td>{obj.description}</td>
-                    <td>{obj.address}</td>
+                  return (
+                    <tr key={imageKey}>
+                      <td>{index + 1}</td>
+                      <td>{obj.email}</td>
+                      <td>{obj.organizerId}</td>
+                      <td>{obj.organizerName}</td>
+                      <td>{obj.contact}</td>
+                      <td>{obj.gameCategory}</td>
+                      <td className="admin-description-cell">{obj.description}</td>
+                      <td>{obj.address}</td>
 
-                    <td>
-                      {logoUrl && !isBroken ? (
-                        <img
-                          src={logoUrl}
-                          height="70"
-                          width="70"
-                          alt="organizerLogo"
-                          style={{
-                            objectFit: "cover",
-                            borderRadius: "6px",
-                            border: "1px solid #ccc"
-                          }}
-                          onError={() => {
-                            setBrokenImages((prev) => ({
-                              ...prev,
-                              [imageKey]: true
-                            }));
-                          }}
-                        />
-                      ) : (
-                        <div
-                          style={{
-                            height: "70px",
-                            width: "70px",
-                            border: "1px solid #ccc",
-                            borderRadius: "6px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            fontSize: "11px",
-                            color: "#666",
-                            backgroundColor: "#f5f5f5"
-                          }}
-                        >
-                          No Logo
-                        </div>
-                      )}
-                    </td>
+                      <td>
+                        {logoUrl && !isBroken ? (
+                          <img
+                            src={logoUrl}
+                            alt="organizerLogo"
+                            className="admin-logo-image"
+                            onError={() => {
+                              setBrokenImages((prev) => ({
+                                ...prev,
+                                [imageKey]: true
+                              }));
+                            }}
+                          />
+                        ) : (
+                          <div className="admin-no-logo">No Logo</div>
+                        )}
+                      </td>
 
-                    <td>
-                      {obj.emailVerified ? (
-                        <span style={{ color: "green", fontWeight: "bold" }}>
-                          True
-                        </span>
-                      ) : (
-                        <span style={{ color: "red", fontWeight: "bold" }}>
-                          False
-                        </span>
-                      )}
-                    </td>
+                      <td>
+                        {obj.emailVerified ? (
+                          <span className="admin-status admin-status-approved">
+                            Verified
+                          </span>
+                        ) : (
+                          <span className="admin-status admin-status-closed">
+                            Not Verified
+                          </span>
+                        )}
+                      </td>
 
-                    <td>
-                      {obj.accountStatus !== "approved" ? (
-                        <button
-                          onClick={() => handleSubmit(obj.email)}
-                          style={{
-                            padding: "5px 10px",
-                            backgroundColor: "crimson",
-                            color: "white",
-                            cursor: "pointer",
-                            border: "none",
-                            borderRadius: "4px"
-                          }}
-                        >
-                          Verify
-                        </button>
-                      ) : (
-                        <span style={{ color: "green", fontWeight: "bold" }}>
-                          Verified
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                      <td>
+                        {obj.accountStatus !== "approved" ? (
+                          <button
+                            className="admin-btn admin-btn-primary"
+                            onClick={() => handleSubmit(obj.email)}
+                          >
+                            Verify
+                          </button>
+                        ) : (
+                          <span className="admin-status admin-status-approved">
+                            Verified
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       ) : (
-        <div>Data Not Found</div>
+        <div className="admin-empty-box">No organizer data found.</div>
       )}
     </div>
   );
