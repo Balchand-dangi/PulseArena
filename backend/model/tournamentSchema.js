@@ -46,29 +46,58 @@ const tournamentSchema = new mongoose.Schema({
     trim: true
   },
 
+  // tournamentName: {
+  //   type: String,
+  //   required: true,
+  //   trim: true
+  // },
+
   tournamentName: {
-    type: String,
-    required: true,
-    trim: true
-  },
+  type: String,
+  required: true,
+  trim: true,
+  minlength: 3,
+  maxlength: 50,
+  match: [/^[a-zA-Z0-9\s]+$/, "Invalid tournament name"]
+},
+
+  // organizerContact: {
+  //   type: String,
+  //   required: true,
+  //   trim: true
+  // },
 
   organizerContact: {
-    type: String,
-    required: true,
-    trim: true
-  },
+  type: String,
+  required: true,
+  match: [/^[0-9]{10}$/, "Enter valid 10 digit number"]
+},
+
+  // venue: {
+  //   type: String,
+  //   required: true,
+  //   trim: true
+  // },
 
   venue: {
-    type: String,
-    required: true,
-    trim: true
-  },
+  type: String,
+  required: true,
+  trim: true,
+  minlength: 3,
+  match: [/^[a-zA-Z0-9\s,.-]+$/, "Invalid venue"]
+},
+
+  // gameTitle: {
+  //   type: String,
+  //   required: true,
+  //   trim: true
+  // },
 
   gameTitle: {
-    type: String,
-    required: true,
-    trim: true
-  },
+  type: String,
+  required: true,
+  enum: ["Cricket", "Football", "BGMI", "Valorant", "CSGO"]
+},
 
   eventType: {
     type: String,
@@ -77,11 +106,19 @@ const tournamentSchema = new mongoose.Schema({
     trim: true
   },
 
+  // description: {
+  //   type: String,
+  //   default: "",
+  //   trim: true
+  // },
+
   description: {
-    type: String,
-    default: "",
-    trim: true
-  },
+  type: String,
+  required: true,
+  minlength: 10,
+  maxlength: 300,
+  trim: true
+},
 
   maxParticipants: {
     type: Number,
@@ -89,11 +126,17 @@ const tournamentSchema = new mongoose.Schema({
     min: [1, "Max participants must be at least 1"]
   },
 
+  // tournamentDate: {
+  //   type: String,
+  //   required: true,
+  //   trim: true
+  // },
+
   tournamentDate: {
-    type: String,
-    required: true,
-    trim: true
-  },
+  type: String,
+  required: true,
+  match: [/^\d{4}-\d{2}-\d{2}$/, "Invalid date format"]
+},
 
   reportingTime: {
     type: String,
@@ -101,11 +144,17 @@ const tournamentSchema = new mongoose.Schema({
     trim: true
   },
 
+  // gameCategory: {
+  //   type: String,
+  //   required: true,
+  //   trim: true
+  // },
+
   gameCategory: {
-    type: String,
-    required: true,
-    trim: true
-  },
+  type: String,
+  required: true,
+  enum: ["Outdoor", "Indoor", "Esports"]
+},
 
   tournamentPoster: {
     type: String,
@@ -158,3 +207,15 @@ tournamentSchema.set("toJSON", { virtuals: true });
 tournamentSchema.set("toObject", { virtuals: true });
 
 export default mongoose.model("Tournament", tournamentSchema, "tournaments");
+
+
+/* ================= AUTO STATUS UPDATE ================= */
+tournamentSchema.methods.updateEventStatus = function () {
+  const today = new Date();
+  const eventDate = moment(this.tournamentDate, "YYYY-MM-DD").toDate();
+
+  if (today > eventDate) {
+    this.eventStatus = "Completed";
+    this.registrationOpen = false;
+  }
+};

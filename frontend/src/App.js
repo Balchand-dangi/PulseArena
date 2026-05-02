@@ -10,36 +10,42 @@ import { useDispatch } from "react-redux";
 import "./App.css";
 import Cookies from "js-cookie";
 
-import Header from "./component/Header.js";
-import Navbar from "./component/Navbar.js";
-import Home from "./component/Home.js";
-import About from "./component/About.js";
-import Contact from "./component/Contact.js";
-import Footer from "./component/Footer.js";
+/* ================= COMMON COMPONENTS ================= */
+import Header from "./components/common/Header";
+import Navbar from "./components/common/Navbar";
+import Footer from "./components/common/Footer";
 
-import LoginParticipant from "./component/LoginParticipant.js";
-import LoginOrganizer from "./component/LoginOrganizer.js";
-import LoginAdmin from "./component/LoginAdmin.js";
+/* ================= PUBLIC PAGES ================= */
+import Home from "./pages/public/Home";
+import About from "./pages/public/About";
+import Contact from "./pages/public/Contact";
 
-import RegistrationParticipant from "./component/RegistrationParticipant.js";
-import RegistrationOrganizer from "./component/RegistrationOrganizer.js";
+/* ================= AUTH PAGES ================= */
+import LoginParticipant from "./pages/participant/LoginParticipant";
+import LoginOrganizer from "./pages/organizer/LoginOrganizer";
+import LoginAdmin from "./pages/admin/LoginAdmin";
 
-import ParticipantHome from "./component/ParticipantHome.js";
-import RegisterTournament from "./component/RegisterTournament.js";
-import ParticipantViewRegistration from "./component/ParticipantViewRegistration.js";
+import RegistrationParticipant from "./pages/participant/RegistrationParticipant";
+import RegistrationOrganizer from "./pages/organizer/RegistrationOrganizer";
 
-import OrganizerHome from "./component/OrganizerHome.js";
-import OrganizerCreateTournament from "./component/OrganizerCreateTournament.js";
-import TournamentList from "./component/TournamentList.js";
+import VerifyParticipantOtp from "./pages/participant/VerifyParticipantOtp";
+import VerifyOrganizerOTP from "./pages/organizer/VerifyOrganizerOTP";
 
-import AdminHome from "./component/AdminHome.js";
-import AdminOrganizerList from "./component/AdminOrganizerList.js";
-import AdminDashboard from "./component/AdminDashboard";
+/* ================= PARTICIPANT PAGES ================= */
+import ParticipantHome from "./pages/participant/ParticipantHome";
+import RegisterTournament from "./pages/participant/RegisterTournament";
+import ParticipantViewRegistration from "./pages/participant/ParticipantViewRegistration";
+import ParticipantEventDetails from "./pages/participant/ParticipantEventDetails";
 
-import VerifyParticipantOtp from "./component/VerifyParticipantOtp.js";
-import VerifyOrganizerOTP from "./component/VerifyOrganizerOTP.js";
+/* ================= ORGANIZER PAGES ================= */
+import OrganizerHome from "./pages/organizer/OrganizerHome";
+import OrganizerCreateTournament from "./pages/organizer/OrganizerCreateTournament";
+import TournamentList from "./pages/organizer/TournamentList";
 
-import ParticipantEventDetails from "./pages/ParticipantEventDetails.js";
+/* ================= ADMIN PAGES ================= */
+import AdminHome from "./pages/admin/AdminHome";
+import AdminOrganizerList from "./pages/admin/AdminOrganizerList";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 import { setNavShow } from "./store/commonSlice.js";
 
@@ -69,7 +75,7 @@ function Layout() {
     location.pathname === "/verifyParticipantOtp" ||
     location.pathname === "/verifyOrganizerOTP";
 
-  /* ================= AUTO RESTORE NAVBAR STATE ================= */
+  /* ================= AUTO RESTORE NAVBAR ================= */
   useEffect(() => {
     const participantToken = Cookies.get("participantTokenData");
     const organizerToken = Cookies.get("organizerTokenData");
@@ -92,128 +98,80 @@ function Layout() {
       {!hideLayout && <Navbar />}
 
       <Routes>
-        {/* ================= PUBLIC ROUTES ================= */}
+        {/* ================= PUBLIC ================= */}
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
 
+        {/* ================= AUTH ================= */}
         <Route path="/adminLogin" element={<LoginAdmin />} />
         <Route path="/participantLogin" element={<LoginParticipant />} />
         <Route path="/organizerLogin" element={<LoginOrganizer />} />
 
-        <Route
-          path="/participantRegistration"
-          element={<RegistrationParticipant />}
-        />
-        <Route
-          path="/organizerRegistration"
-          element={<RegistrationOrganizer />}
-        />
+        <Route path="/participantRegistration" element={<RegistrationParticipant />} />
+        <Route path="/organizerRegistration" element={<RegistrationOrganizer />} />
 
-        <Route
-          path="/verifyParticipantOtp"
-          element={<VerifyParticipantOtp />}
-        />
+        <Route path="/verifyParticipantOtp" element={<VerifyParticipantOtp />} />
         <Route path="/verifyOrganizerOTP" element={<VerifyOrganizerOTP />} />
 
-        {/* ================= PARTICIPANT ROUTES ================= */}
+        {/* ================= PARTICIPANT ================= */}
         <Route
           path="/participantHome"
-          element={
-            <ParticipantRoute>
-              <ParticipantHome />
-            </ParticipantRoute>
-          }
+          element={<ParticipantRoute><ParticipantHome /></ParticipantRoute>}
         />
 
         <Route
           path="/participant/event/:id"
-          element={
-            <ParticipantRoute>
-              <ParticipantEventDetails />
-            </ParticipantRoute>
-          }
+          element={<ParticipantRoute><ParticipantEventDetails /></ParticipantRoute>}
         />
 
         <Route
           path="/registerTournament"
-          element={
-            <ParticipantRoute>
-              <RegisterTournament />
-            </ParticipantRoute>
-          }
+          element={<ParticipantRoute><RegisterTournament /></ParticipantRoute>}
         />
 
         <Route
           path="/participantViewRegistration"
-          element={
-            <ParticipantRoute>
-              <ParticipantViewRegistration />
-            </ParticipantRoute>
-          }
+          element={<ParticipantRoute><ParticipantViewRegistration /></ParticipantRoute>}
         />
 
-        {/* ================= ORGANIZER ROUTES ================= */}
+        {/* ================= ORGANIZER ================= */}
         <Route
           path="/organizerHome"
-          element={
-            <OrganizerRoute>
-              <OrganizerHome />
-            </OrganizerRoute>
-          }
+          element={<OrganizerRoute><OrganizerHome /></OrganizerRoute>}
         />
 
         <Route
           path="/createTournament"
-          element={
-            <OrganizerRoute>
-              <OrganizerCreateTournament />
-            </OrganizerRoute>
-          }
+          element={<OrganizerRoute><OrganizerCreateTournament /></OrganizerRoute>}
         />
 
         <Route
           path="/organizerTournamentList"
-          element={
-            <OrganizerRoute>
-              <TournamentList />
-            </OrganizerRoute>
-          }
+          element={<OrganizerRoute><TournamentList /></OrganizerRoute>}
         />
 
-        {/* ================= ADMIN ROUTES ================= */}
+        {/* ================= ADMIN ================= */}
         <Route
           path="/adminHome"
-          element={
-            <AdminRoute>
-              <AdminHome />
-            </AdminRoute>
-          }
+          element={<AdminRoute><AdminHome /></AdminRoute>}
         />
 
         <Route
           path="/adminOrganizerList"
-          element={
-            <AdminRoute>
-              <AdminOrganizerList />
-            </AdminRoute>
-          }
+          element={<AdminRoute><AdminOrganizerList /></AdminRoute>}
         />
 
         <Route
           path="/adminDashboard"
-          element={
-            <AdminRoute>
-              <AdminDashboard />
-            </AdminRoute>
-          }
+          element={<AdminRoute><AdminDashboard /></AdminRoute>}
         />
 
         {/* ================= FALLBACK ================= */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
 
-      {/* ================= FOOTER ONLY ON HOME ================= */}
+      {/* Footer only on home */}
       {!hideLayout && location.pathname === "/" && <Footer />}
     </div>
   );
@@ -228,3 +186,245 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+
+// import React, { useEffect } from "react";
+// import {
+//   BrowserRouter as Router,
+//   Route,
+//   Routes,
+//   useLocation,
+//   Navigate
+// } from "react-router-dom";
+// import { useDispatch } from "react-redux";
+// import "./App.css";
+// import Cookies from "js-cookie";
+
+// /* ================= COMMON COMPONENTS ================= */
+// import Header from "./components/common/Header";
+// import Navbar from "./components/common/Navbar";
+// import Footer from "./components/common/Footer";
+
+// /* ================= PUBLIC PAGES ================= */
+// import Home from "./pages/public/Home";
+// import About from "./pages/public/About";
+// import Contact from "./pages/public/Contact";
+
+// /* ================= AUTH PAGES ================= */
+// import LoginParticipant from "./pages/participant/LoginParticipant";
+// import LoginOrganizer from "./pages/organizer/LoginOrganizer";
+// import LoginAdmin from "./pages/admin/LoginAdmin";
+
+// import RegistrationParticipant from "./pages/participant/RegistrationParticipant";
+// import RegistrationOrganizer from "./pages/organizer/RegistrationOrganizer";
+
+// import VerifyParticipantOtp from "./pages/participant/VerifyParticipantOtp";
+// import VerifyOrganizerOTP from "./pages/organizer/VerifyOrganizerOTP";
+
+// /* ================= PARTICIPANT PAGES ================= */
+// import ParticipantHome from "./pages/participant/ParticipantHome";
+// import RegisterTournament from "./pages/participant/RegisterTournament";
+// import ParticipantViewRegistration from "./pages/participant/ParticipantViewRegistration";
+// import ParticipantEventDetails from "./pages/participant/ParticipantEventDetails";
+
+// /* ================= ORGANIZER PAGES ================= */
+// import OrganizerHome from "./pages/organizer/OrganizerHome";
+// import OrganizerCreateTournament from "./pages/organizer/OrganizerCreateTournament";
+// import TournamentList from "./pages/organizer/TournamentList";
+
+// /* ================= ADMIN PAGES ================= */
+// import AdminHome from "./pages/admin/AdminHome";
+// import AdminOrganizerList from "./pages/admin/AdminOrganizerList";
+// import AdminDashboard from "./pages/admin/AdminDashboard";
+
+// import { setNavShow } from "./store/commonSlice.js";
+
+// /* ================= PROTECTED ROUTES ================= */
+
+// const AdminRoute = ({ children }) => {
+//   const token = Cookies.get("adminTokenData");
+//   return token ? children : <Navigate to="/adminLogin" />;
+// };
+
+// const ParticipantRoute = ({ children }) => {
+//   const token = Cookies.get("participantTokenData");
+//   return token ? children : <Navigate to="/participantLogin" />;
+// };
+
+// const OrganizerRoute = ({ children }) => {
+//   const token = Cookies.get("organizerTokenData");
+//   return token ? children : <Navigate to="/organizerLogin" />;
+// };
+
+// function Layout() {
+//   const location = useLocation();
+//   const dispatch = useDispatch();
+
+//   /* ================= HIDE HEADER/NAV ON OTP PAGES ================= */
+//   const hideLayout =
+//     location.pathname === "/verifyParticipantOtp" ||
+//     location.pathname === "/verifyOrganizerOTP";
+
+//   /* ================= AUTO RESTORE NAVBAR STATE ================= */
+//   useEffect(() => {
+//     const participantToken = Cookies.get("participantTokenData");
+//     const organizerToken = Cookies.get("organizerTokenData");
+//     const adminToken = Cookies.get("adminTokenData");
+
+//     if (participantToken) {
+//       dispatch(setNavShow("participant"));
+//     } else if (organizerToken) {
+//       dispatch(setNavShow("organizer"));
+//     } else if (adminToken) {
+//       dispatch(setNavShow("admin"));
+//     } else {
+//       dispatch(setNavShow("home"));
+//     }
+//   }, [dispatch, location.pathname]);
+
+//   return (
+//     <div id="container">
+//       {!hideLayout && <Header />}
+//       {!hideLayout && <Navbar />}
+
+//       <Routes>
+//         {/* ================= PUBLIC ROUTES ================= */}
+//         <Route path="/" element={<Home />} />
+//         <Route path="/about" element={<About />} />
+//         <Route path="/contact" element={<Contact />} />
+
+//         <Route path="/adminLogin" element={<LoginAdmin />} />
+//         <Route path="/participantLogin" element={<LoginParticipant />} />
+//         <Route path="/organizerLogin" element={<LoginOrganizer />} />
+
+//         <Route
+//           path="/participantRegistration"
+//           element={<RegistrationParticipant />}
+//         />
+//         <Route
+//           path="/organizerRegistration"
+//           element={<RegistrationOrganizer />}
+//         />
+
+//         <Route
+//           path="/verifyParticipantOtp"
+//           element={<VerifyParticipantOtp />}
+//         />
+//         <Route path="/verifyOrganizerOTP" element={<VerifyOrganizerOTP />} />
+
+//         {/* ================= PARTICIPANT ROUTES ================= */}
+//         <Route
+//           path="/participantHome"
+//           element={
+//             <ParticipantRoute>
+//               <ParticipantHome />
+//             </ParticipantRoute>
+//           }
+//         />
+
+//         <Route
+//           path="/participant/event/:id"
+//           element={
+//             <ParticipantRoute>
+//               <ParticipantEventDetails />
+//             </ParticipantRoute>
+//           }
+//         />
+
+//         <Route
+//           path="/registerTournament"
+//           element={
+//             <ParticipantRoute>
+//               <RegisterTournament />
+//             </ParticipantRoute>
+//           }
+//         />
+
+//         <Route
+//           path="/participantViewRegistration"
+//           element={
+//             <ParticipantRoute>
+//               <ParticipantViewRegistration />
+//             </ParticipantRoute>
+//           }
+//         />
+
+//         {/* ================= ORGANIZER ROUTES ================= */}
+//         <Route
+//           path="/organizerHome"
+//           element={
+//             <OrganizerRoute>
+//               <OrganizerHome />
+//             </OrganizerRoute>
+//           }
+//         />
+
+//         <Route
+//           path="/createTournament"
+//           element={
+//             <OrganizerRoute>
+//               <OrganizerCreateTournament />
+//             </OrganizerRoute>
+//           }
+//         />
+
+//         <Route
+//           path="/organizerTournamentList"
+//           element={
+//             <OrganizerRoute>
+//               <TournamentList />
+//             </OrganizerRoute>
+//           }
+//         />
+
+//         {/* ================= ADMIN ROUTES ================= */}
+//         <Route
+//           path="/adminHome"
+//           element={
+//             <AdminRoute>
+//               <AdminHome />
+//             </AdminRoute>
+//           }
+//         />
+
+//         <Route
+//           path="/adminOrganizerList"
+//           element={
+//             <AdminRoute>
+//               <AdminOrganizerList />
+//             </AdminRoute>
+//           }
+//         />
+
+//         <Route
+//           path="/adminDashboard"
+//           element={
+//             <AdminRoute>
+//               <AdminDashboard />
+//             </AdminRoute>
+//           }
+//         />
+
+//         {/* ================= FALLBACK ================= */}
+//         <Route path="*" element={<Navigate to="/" />} />
+//       </Routes>
+
+//       {/* ================= FOOTER ONLY ON HOME ================= */}
+//       {!hideLayout && location.pathname === "/" && <Footer />}
+//     </div>
+//   );
+// }
+
+// function App() {
+//   return (
+//     <Router>
+//       <Layout />
+//     </Router>
+//   );
+// }
+
+// export default App;

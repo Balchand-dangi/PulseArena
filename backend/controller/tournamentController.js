@@ -3,26 +3,177 @@ import tournamentSchema from "../model/tournamentSchema.js";
 import organizerSchema from "../model/organizerSchema.js";
 
 /* ================= CREATE TOURNAMENT ================= */
-export const createTournamentController = async (request, response) => {
-  try {
-    const data = request.body;
 
+export const createTournamentController = async (req, res) => {
+  try {
+    let {
+      tournamentName,
+      venue,
+      gameTitle,
+      description,
+      maxParticipants,
+      tournamentDate,
+      reportingTime,
+      gameCategory
+    } = req.body;
+
+    // ✅ Normalize gameTitle (🔥 IMPORTANT FIX)
+    if (gameTitle) {
+      gameTitle = gameTitle.split(" ")[0]; 
+      // "BGMI Esports" → "BGMI"
+    }
+
+    // ✅ Required field check
+    if (
+      !tournamentName ||
+      !venue ||
+      !gameTitle ||
+      !description ||
+      !maxParticipants ||
+      !tournamentDate ||
+      !reportingTime ||
+      !gameCategory
+    ) {
+      return res.status(400).send({
+        message: "All fields are required"
+      });
+    }
+
+    // ✅ Text validation
+    const isValidText = (text) =>
+      /^[a-zA-Z0-9\s,.-]+$/.test(text);
+
+    if (!isValidText(tournamentName)) {
+      return res.status(400).send({ message: "Invalid tournament name" });
+    }
+
+    if (!isValidText(venue)) {
+      return res.status(400).send({ message: "Invalid venue" });
+    }
+
+    // ✅ Game validation
+    const validGames = ["Cricket", "Football", "BGMI", "Valorant", "CSGO"];
+
+    if (!validGames.includes(gameTitle)) {
+      return res.status(400).send({
+        message: "Invalid game selected"
+      });
+    }
+
+    // ✅ Description validation
+    if (description.length < 10) {
+      return res.status(400).send({
+        message: "Description must be at least 10 characters"
+      });
+    }
+
+    // ✅ Participants validation
+    if (Number(maxParticipants) <= 0) {
+      return res.status(400).send({
+        message: "Participants must be greater than 0"
+      });
+    }
+
+    // ✅ Create object
     const tournamentObj = {
-      ...data,
+      ...req.body,
+      gameTitle, // 🔥 use normalized value
       tournamentId: uuid4()
     };
 
     await tournamentSchema.create(tournamentObj);
 
-    response.status(200).send({
+    res.status(200).send({
       message: "Tournament created successfully"
     });
 
   } catch (error) {
     console.log("Error in createTournamentController:", error);
-    response.status(500).send("Internal Server Error");
+    res.status(500).send("Internal Server Error");
   }
 };
+// export const createTournamentController = async (req, res) => {
+//   try {
+//     const {
+//       tournamentName,
+//       venue,
+//       gameTitle,
+//       description,
+//       maxParticipants,
+//       tournamentDate,
+//       reportingTime,
+//       gameCategory
+//     } = req.body;
+
+//     // ✅ 1. Required field check
+//     if (
+//       !tournamentName ||
+//       !venue ||
+//       !gameTitle ||
+//       !description ||
+//       !maxParticipants ||
+//       !tournamentDate ||
+//       !reportingTime ||
+//       !gameCategory
+//     ) {
+//       return res.status(400).send({
+//         message: "All fields are required"
+//       });
+//     }
+
+//     // ✅ 2. Text validation (anti-garbage)
+//     const isValidText = (text) =>
+//       /^[a-zA-Z0-9\s,.-]+$/.test(text);
+
+//     if (!isValidText(tournamentName)) {
+//       return res.status(400).send({ message: "Invalid tournament name" });
+//     }
+
+//     if (!isValidText(venue)) {
+//       return res.status(400).send({ message: "Invalid venue" });
+//     }
+
+//     // ✅ 3. Game validation
+//     const validGames = ["Cricket", "Football", "BGMI", "Valorant", "CSGO"];
+
+//     if (!validGames.includes(gameTitle)) {
+//       return res.status(400).send({
+//         message: "Invalid game selected"
+//       });
+//     }
+
+//     // ✅ 4. Description validation
+//     if (description.length < 10) {
+//       return res.status(400).send({
+//         message: "Description must be at least 10 characters"
+//       });
+//     }
+
+//     // ✅ 5. Participants validation
+//     if (Number(maxParticipants) <= 0) {
+//       return res.status(400).send({
+//         message: "Participants must be greater than 0"
+//       });
+//     }
+
+//     // ✅ 6. Create object
+//     const tournamentObj = {
+//       ...req.body,
+//       tournamentId: uuid4()
+//     };
+
+//     await tournamentSchema.create(tournamentObj);
+
+//     res.status(200).send({
+//       message: "Tournament created successfully"
+//     });
+
+//   } catch (error) {
+//     console.log("Error in createTournamentController:", error);
+//     res.status(500).send("Internal Server Error");
+//   }
+// };
+
 
 /* ================= VIEW ALL TOURNAMENTS ================= */
 export const viewTournamentListController = async (request, response) => {

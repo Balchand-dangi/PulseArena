@@ -205,3 +205,42 @@ textarea:focus {
     font-size: 24px;
   }
 }
+
+/* ===== GLOBAL MOBILE ===== */
+@media (max-width: 768px) {
+  
+  h1 {
+    font-size: 28px !important;
+  }
+
+  h2 {
+    font-size: 24px !important;
+  }
+
+  h3 {
+    font-size: 20px !important;
+  }
+
+  p {
+    font-size: 14px !important;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+
+
+/* ===== FINAL SAFETY ===== */
+body, html {
+  overflow-x: hidden;
+}
+
+img, video {
+  max-width: 100%;
+  height: auto;
+}
+
+section, div {
+  max-width: 100%;
+}
