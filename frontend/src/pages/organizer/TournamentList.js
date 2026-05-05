@@ -6,6 +6,7 @@ import axios from "axios";
 import jscookie from "js-cookie";
 import "./organizerPages.css";
 import UserListModal from "../../components/common/modal/UserListModal";
+import { requestedTournamentURL } from "../../utils";
 
 function TournamentList() {
   const organizerObj = useSelector((state) => state.organizer);
@@ -28,7 +29,7 @@ function TournamentList() {
       const token = jscookie.get("organizerTokenData");
 
       const res = await axios.get(
-        `http://localhost:5000/tournament/participants/${tournamentId}?organizerTokenData=${token}`
+        `${requestedTournamentURL}/participants/${tournamentId}?organizerTokenData=${token}`
       );
 
       console.log(res.data);

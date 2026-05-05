@@ -21,27 +21,74 @@ import { adminCredentials } from "./utility/adminUtility.js";
 dotenv.config();
 
 const app = express();
+const isProduction = process.env.NODE_ENV === "production";
+const allowedOrigins = (process.env.FRONTEND_URL || "http://localhost:3000")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+const requiredEnv = [
+  "ADMIN_SECRET",
+  "ORGANIZER_SECRET",
+  "PARTICIPANT_SECRET",
+  "CLOUD_NAME",
+  "CLOUD_API_KEY",
+  "CLOUD_API_SECRET",
+  "EMAIL_USER",
+  "EMAIL_PASS",
+  "EMAIL_VERIFY_URL",
+  "FRONTEND_URL"
+];
+
+if (isProduction) {
+  const missingEnv = requiredEnv.filter((key) => !process.env[key]);
+
+  if (!process.env.MONGODB_URL && !process.env.MONGODB_URI) {
+    missingEnv.push("MONGODB_URL or MONGODB_URI");
+  }
+
+  if (missingEnv.length > 0) {
+    throw new Error(`Missing required production env variables: ${missingEnv.join(", ")}`);
+  }
+}
+
+app.set("trust proxy", 1);
 
 /* ================= SECURITY ================= */
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" }
+  })
+);
 
 /* ================= CORS ================= */
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
     credentials: true
   })
 );
 
 /* ================= BODY PARSER ================= */
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "2mb" }));
+app.use(express.urlencoded({ extended: true, limit: "2mb" }));
 
 /* ================= COOKIE ================= */
 app.use(cookieParser());
 
 /* ================= STATIC ================= */
-app.use("/public", express.static("public"));
+app.use(
+  "/public",
+  express.static("public", {
+    maxAge: isProduction ? "7d" : 0
+  })
+);
 
 /* ================= HEALTH CHECK ================= */
 app.get("/", (req, res) => {

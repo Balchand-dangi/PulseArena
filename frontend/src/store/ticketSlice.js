@@ -2,7 +2,9 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import jscookie from "js-cookie";
 
-const BASE_URL = process.env.REACT_APP_REQUESTED_TICKET_URL;
+const BASE_URL =
+  process.env.REACT_APP_REQUESTED_TICKET_URL ||
+  `${process.env.REACT_APP_API_BASE_URL}/ticket`;
 
 /* ================= COMMON HEADERS ================= */
 const getHeaders = () => {
